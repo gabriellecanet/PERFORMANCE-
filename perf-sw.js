@@ -7,3 +7,4 @@ self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;c
  e.respondWith((async()=>{const net=fetch(r,{cache:'no-store'}).then(res=>{if(res&&res.ok){const cp=res.clone();caches.open(C).then(c=>c.put(r,cp)).catch(()=>{})}return res});
   try{return await Promise.race([net,new Promise((_,rej)=>setTimeout(()=>rej(new Error('slow')),3500))])}
   catch(err){const m=await caches.match(r,{ignoreSearch:true})||(r.mode==='navigate'?await caches.match('./perf-app.html'):null);if(m)return m;return net}})())});
+ 
